@@ -16,7 +16,6 @@ namespace N18DCCN109_BACKUP_RESTORE
     {
         string tenDevice;
         string tenCSDL;
-        int numrow;
         string strFullPathDevice;
         List<Database> listDatabase;
         List<Backup> listBackups;
@@ -83,7 +82,7 @@ namespace N18DCCN109_BACKUP_RESTORE
             tenDevice = "DEVICE_" + lvDatabaseList.SelectedItems[0].Text;
             
             Device device = DeviceDAO.Instance.GetDevice(_connection, tenDevice);
-            MessageBox.Show(device.name); 
+            MessageBox.Show(device.name);
             if (device.name != "")
             {
                 tạoDeviceSaoLưuToolStripMenuItem.Enabled = false;
@@ -118,26 +117,20 @@ namespace N18DCCN109_BACKUP_RESTORE
         private void saoLưuToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DataProvider dp = new DataProvider(_connection);
-            string query = "USE master BACKUP DATABASE "+tenCSDL+" TO "+tenDevice;
+            string query = "USE master\n BACKUP DATABASE "+tenCSDL+" TO "+tenDevice;
             dp.ExecuteNonQuery(query);
             MessageBox.Show("Tạo Backup thành công!!!");
         }
 
         private void dataGridBackup_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+            int numrow;
             numrow = e.RowIndex;
-            
-
-        }
-         private void khoiphucToolStripMenuItem_Click(object sender, EventArgs e)
-         {
-                DataProvider dp = new DataProvider(_connection);
+            DataProvider dp = new DataProvider(_connection);
             string query = "USE master\n RESTORE DATABASE "+tenCSDL+"FROM "+tenDevice;
             dp.ExecuteNonQuery(query);
             MessageBox.Show("Restore thành công!!!");
-         }
 
-
+        }
     }
 }
