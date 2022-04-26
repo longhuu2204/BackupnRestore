@@ -12,18 +12,18 @@ namespace N18DCCN109_BACKUP_RESTORE.DTO
     {
         public int position { get; set; }
         public string name { get; set; }
-      //  public string dateTime { get; set; }
+        public DateTime dateTime { get; set; }
 
         public string username { get; set; }
 
-        public Backup(int position, string name, string username)
+        public Backup(int position, string name,DateTime datetime, string username)
         {
             this.position = position;
             this.name = name;
-          //  this.dateTime = datetime;
+            this.dateTime = datetime;
             this.username = username;
         }
-        public Backup() : this(-1, "", "") { }
+        public Backup() : this(-1, "",DateTime.Now,  "") { }
 
         public Backup(DataRow dataRow)
         {
@@ -31,7 +31,7 @@ namespace N18DCCN109_BACKUP_RESTORE.DTO
             {
                 this.position = int.Parse(dataRow["position"].ToString());
                 this.name = dataRow["name"].ToString();
-              //  this.dateTime = Convert.ToString(dataRow["backup_start_date"]);
+                this.dateTime = System.Convert.ToDateTime(dataRow["backup_start_date"].ToString());
                 this.username = dataRow["user_name"].ToString();
             }
             catch (Exception ex)

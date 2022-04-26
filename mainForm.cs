@@ -17,36 +17,17 @@ namespace N18DCCN109_BACKUP_RESTORE
         string tenDevice;
         string tenCSDL;
         string strFullPathDevice;
+        int numrow;
         List<Database> listDatabase;
         List<Backup> listBackups;
         private string _connection;
 
-        
+
 
         public mainForm(string connection)
         {
             _connection = connection;
             InitializeComponent();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -61,7 +42,7 @@ namespace N18DCCN109_BACKUP_RESTORE
 
         private void mainForm_Load(object sender, EventArgs e)
         {
-           listDatabase = DatabaseDAO.Instance.GetAllDatabases(_connection);
+            listDatabase = DatabaseDAO.Instance.GetAllDatabases(_connection);
 
             lvDatabaseList.Items.Clear();
 
@@ -69,7 +50,7 @@ namespace N18DCCN109_BACKUP_RESTORE
             {
                 lvDatabaseList.Items.Add(item.name);
             }
-            saoLưuToolStripMenuItem.Enabled=false;
+            saoLưuToolStripMenuItem.Enabled = false;
             tạoDeviceSaoLưuToolStripMenuItem.Enabled = false;
 
         }
@@ -80,9 +61,9 @@ namespace N18DCCN109_BACKUP_RESTORE
             tenCSDL = lvDatabaseList.SelectedItems[0].Text;
             txtTenCSDL.Text = tenCSDL;
             tenDevice = "DEVICE_" + lvDatabaseList.SelectedItems[0].Text;
-            
+
             Device device = DeviceDAO.Instance.GetDevice(_connection, tenDevice);
-            MessageBox.Show(device.name);
+            //MessageBox.Show(device.name);
             if (device.name != "")
             {
                 tạoDeviceSaoLưuToolStripMenuItem.Enabled = false;
@@ -95,11 +76,11 @@ namespace N18DCCN109_BACKUP_RESTORE
             }
 
 
-            listBackups = BackupDAO.Instance.GetAllBackups(_connection,tenCSDL);
+            listBackups = BackupDAO.Instance.GetAllBackups(_connection, tenCSDL);
             dataGridBackup.DataSource = listBackups;
             txtTenDevice.Text = tenDevice;
             txtSoLuong.Text = listBackups.Count.ToString();
-            
+
         }
 
 
@@ -109,7 +90,7 @@ namespace N18DCCN109_BACKUP_RESTORE
 
             strFullPathDevice = Program.strDefaultPath + tenDevice + ".BAK";
             DataProvider dp = new DataProvider(_connection);
-            string query = "USE master\n EXEC sp_addumpdevice 'disk', '" + tenDevice + "','" + strFullPathDevice + "'";
+            string query = "EXEC sp_addumpdevice 'disk', '" + tenDevice + "','" + strFullPathDevice + "'";
             dp.ExecuteNonQuery(query);
             MessageBox.Show("Tạo Device thành công!!!");
         }
@@ -117,19 +98,24 @@ namespace N18DCCN109_BACKUP_RESTORE
         private void saoLưuToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DataProvider dp = new DataProvider(_connection);
-            string query = "USE master\n BACKUP DATABASE "+tenCSDL+" TO "+tenDevice;
+            string query = "BACKUP DATABASE " + tenCSDL + " TO " + tenDevice;
             dp.ExecuteNonQuery(query);
             MessageBox.Show("Tạo Backup thành công!!!");
         }
 
         private void dataGridBackup_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            int numrow;
+            
             numrow = e.RowIndex;
             DataProvider dp = new DataProvider(_connection);
-            string query = "USE master\n RESTORE DATABASE "+tenCSDL+"FROM "+tenDevice;
+            string query = "RESTORE DATABASE " + tenCSDL + "FROM " + tenDevice;
             dp.ExecuteNonQuery(query);
             MessageBox.Show("Restore thành công!!!");
+
+        }
+
+        private void phụcHồiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
         }
     }

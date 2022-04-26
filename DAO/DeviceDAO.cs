@@ -27,7 +27,7 @@ namespace N18DCCN109_BACKUP_RESTORE.DAO
 
             if (dt.Rows.Count > 0)
             {
-                device.name = dt.Rows[0].ToString();
+                device = new Device(dt.Rows[0]);
             }
 
             return device;
